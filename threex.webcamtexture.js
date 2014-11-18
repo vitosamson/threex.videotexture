@@ -1,9 +1,11 @@
-var THREEx = THREEx || {}
+/* global THREE */
+'use strict';
+var THREEx = THREEx || {};
 
 navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 
 THREEx.WebcamTexture	= function(){
-	console.assert(THREEx.WebcamTexture.available === true)
+	console.assert(THREEx.WebcamTexture.available === true);
 	// create the video element
 	var video	= document.createElement('video');
 	video.width	= 320;
@@ -11,11 +13,11 @@ THREEx.WebcamTexture	= function(){
 	video.autoplay	= true;
 	video.loop	= true;
 	// expose video as this.video
-	this.video	= video
+	this.video	= video;
 
 	if (navigator.getUserMedia) {
 		navigator.getUserMedia({video: true}, function(stream) {
-			video.src = URL.createObjectURL(stream);
+			video.src = window.URL.createObjectURL(stream);
 		}, function(err) {
 			alert('you got no WebRTC webcam');
 		});
@@ -26,7 +28,7 @@ THREEx.WebcamTexture	= function(){
 	// create the texture
 	var texture	= new THREE.Texture( video );
 	// expose texture as this.texture
-	this.texture	= texture
+	this.texture	= texture;
 
 	/**
 	 * update the object
@@ -34,15 +36,15 @@ THREEx.WebcamTexture	= function(){
 	this.update	= function(delta, now){
 		if( video.readyState !== video.HAVE_ENOUGH_DATA )	return;
 		texture.needsUpdate	= true;		
-	}
+	};
 
 	/**
 	 * destroy the object
 	 */
 	this.destroy	= function(){
-		video.pause()
-	}
-}
+		video.pause();
+	};
+};
 
 
 THREEx.WebcamTexture.available	= navigator.getUserMedia ? true : false;
