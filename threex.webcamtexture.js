@@ -22,6 +22,16 @@ THREEx.WebcamTexture	= function(direction){
 					return stream.kind == 'video' && stream.facing == direction;
 				});
 
+				if (cams.length < 1) {
+					navigator.getUserMedia({video: true}, function(stream) {
+						video.src = window.URL.createObjectURL(stream);
+					}, function(err) {
+						console.log(err);
+					});
+
+					return;
+				}
+
 				navigator.getUserMedia({
 					video: {
 						optional: [{ sourceId: cams[0].id }]
